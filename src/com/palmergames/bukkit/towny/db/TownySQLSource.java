@@ -791,7 +791,6 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 				e.printStackTrace();
 			}
 
-
 			String line;
 			try {
 				line = rs.getString("friends");
