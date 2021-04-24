@@ -109,6 +109,14 @@ public class Resident extends TownyObject implements InviteReceiver, EconomyHand
 		return this.uuid != null;
 	}
 
+	public Jail getJail() {
+		return jail;
+	}
+
+	public void setJail(Jail jail) {
+		this.jail = jail;
+	}
+	
 	public void setJailed(boolean isJailed) {
 		
 		if (isJailed)
@@ -153,6 +161,10 @@ public class Resident extends TownyObject implements InviteReceiver, EconomyHand
 	
 	public boolean hasJailTime() {
 		return this.jailHours > 0;
+	}
+	
+	public Location getJailSpawn() {
+		return getJail().getJailCellLocations().get(getJailCell());
 	}
 
 	public void setTitle(String title) {
@@ -800,14 +812,6 @@ public class Resident extends TownyObject implements InviteReceiver, EconomyHand
 	@Override
 	public void save() {
 		TownyUniverse.getInstance().getDataSource().saveResident(this);
-	}
-
-	public Jail getJail() {
-		return jail;
-	}
-
-	public void setJail(Jail jail) {
-		this.jail = jail;
 	}
 
 	/**
