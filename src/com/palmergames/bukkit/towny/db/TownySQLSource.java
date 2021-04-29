@@ -2390,5 +2390,4 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 	public HikariDataSource getHikariDataSource() {
 		return hikariDataSource;
 	}
-
 }
