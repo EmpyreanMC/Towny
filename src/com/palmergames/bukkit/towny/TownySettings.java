@@ -3064,5 +3064,9 @@ public class TownySettings {
 	public static boolean getPreventFluidGriefingEnabled() {
 		return getBoolean(ConfigNodes.GTOWN_SETTINGS_PREVENT_FLUID_GRIEFING);
 	}
+
+	public static boolean getTownAutomaticCapitalisationEnabled(){
+		return getBoolean(ConfigNodes.GTOWN_SETTINGS_AUTOMATIC_CAPITALISATION);
+	}
 }
 
