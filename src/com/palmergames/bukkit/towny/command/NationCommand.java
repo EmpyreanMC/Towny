@@ -1235,10 +1235,10 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 			boolean tooManyResidents = false;
 			if (town.isCapital()) {
 				// Check that the capital wont have too many residents after deletion. 
-				tooManyResidents = TownySettings.getMaxResidentsPerTown() > 0 && TownySettings.getMaxResidentsPerTownCapitalOverride() > 0 && town.getNumResidents() > TownySettings.getMaxResidentsPerTown(); 
+				tooManyResidents = TownySettings.getMaxResidentsPerTown() > 0 && TownySettings.getMaxResidentsPerTownCapitalMultiplier() > 1 && town.getNumResidents() > TownySettings.getBaseMaxResidentsForTown(town); 
 				// Show a message preceding the confirmation message if they will lose residents. 
 				if (tooManyResidents)
-					TownyMessaging.sendMsg(player, Translation.of("msg_deleting_nation_will_result_in_losing_residents", TownySettings.getMaxResidentsPerTown(), town.getNumResidents() - TownySettings.getMaxResidentsPerTown()));
+					TownyMessaging.sendMsg(player, Translation.of("msg_deleting_nation_will_result_in_losing_residents", TownySettings.getBaseMaxResidentsForTown(town), town.getNumResidents() - TownySettings.getBaseMaxResidentsForTown(town)));
 			}
 			final Town finalTown = town;
 			final Nation nation = town.getNation();
@@ -1274,10 +1274,10 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 				Town town = resident.getTown();
 				Nation nation = resident.getTown().getNation();
 				// Check that the capital wont have too many residents after deletion. 
-				boolean tooManyResidents = TownySettings.getMaxResidentsPerTown() > 0 && TownySettings.getMaxResidentsPerTownCapitalOverride() > 0 && town.getNumResidents() > TownySettings.getMaxResidentsPerTown(); 
+				boolean tooManyResidents = TownySettings.getMaxResidentsPerTown() > 0 && TownySettings.getMaxResidentsPerTownCapitalMultiplier() > 1 && town.getNumResidents() > TownySettings.getBaseMaxResidentsForTown(town); 
 				// Show a message preceding the confirmation message if they will lose residents. 
 				if (tooManyResidents)
-					TownyMessaging.sendMsg(player, Translation.of("msg_deleting_nation_will_result_in_losing_residents", TownySettings.getMaxResidentsPerTown(), town.getNumResidents() - TownySettings.getMaxResidentsPerTown()));
+					TownyMessaging.sendMsg(player, Translation.of("msg_deleting_nation_will_result_in_losing_residents", TownySettings.getBaseMaxResidentsForTown(town), town.getNumResidents() - TownySettings.getBaseMaxResidentsForTown(town)));
 
 				Confirmation.runOnAccept(() -> {
 					TownyMessaging.sendGlobalMessage(Translation.of("MSG_DEL_NATION", nation.getName()));
@@ -2142,7 +2142,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 			            	return;
 			            }
 			            
-			            if (TownySettings.getMaxResidentsPerTown() > 0 && nation.getCapital().getNumResidents() > TownySettings.getMaxResidentsPerTown()) {
+			            if (TownySettings.getMaxResidentsPerTown() > 0 && nation.getCapital().getNumResidents() > TownySettings.getMaxResidentsForTown(newCapital)) {
 			            	TownyMessaging.sendErrorMsg(player, Translation.of("msg_err_nation_capital_too_many_residents", newCapital.getName()));
 			            	return;
 			            }
@@ -2176,7 +2176,7 @@ public class NationCommand extends BaseCommand implements CommandExecutor {
 		            	return;
 		            }
 		            
-		            if (TownySettings.getMaxResidentsPerTown() > 0 && nation.getNumResidents() > TownySettings.getMaxResidentsPerTown()) {
+		            if (TownySettings.getMaxResidentsPerTown() > 0 && nation.getNumResidents() > TownySettings.getMaxResidentsForTown(newCapital)) {
 		            	TownyMessaging.sendErrorMsg(player, Translation.of("msg_err_nation_capital_too_many_residents", newCapital.getName()));
 		            	return;
 		            }

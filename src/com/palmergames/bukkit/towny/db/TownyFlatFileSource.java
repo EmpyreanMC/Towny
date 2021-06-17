@@ -1,22 +1,12 @@
 package com.palmergames.bukkit.towny.db;
 
-import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.TownyMessaging;
-import com.palmergames.bukkit.towny.TownySettings;
-import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.*;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EmptyNationException;
 import com.palmergames.bukkit.towny.exceptions.InvalidNameException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.PlotGroup;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyWorld;
-import com.palmergames.bukkit.towny.object.Translation;
-import com.palmergames.bukkit.towny.object.WorldCoord;
+import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.towny.object.metadata.MetadataLoader;
 import com.palmergames.bukkit.towny.object.jail.Jail;
 import com.palmergames.bukkit.towny.tasks.DeleteFileTask;
@@ -894,6 +884,27 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 					UUID uuid = UUID.fromString(line);
 					if (TownyUniverse.getInstance().hasJail(uuid))
 						town.setPrimaryJail(TownyUniverse.getInstance().getJail(uuid));
+				}
+
+				line = keys.get("techs");
+				if (line != null) {
+					tokens = line.split(",");
+					for (String token : tokens) {
+						if (!token.isEmpty()) {
+							TownyMessaging.sendDebugMsg(Translation.of("flatfile_dbg_town_fetch_outlaw", token));
+							Tech tech = TownyTech.getTech(token);
+							if (tech != null) {
+								try {
+									town.addTech(tech);
+								} catch (AlreadyRegisteredException ex) {
+									TownyMessaging.sendErrorMsg(Translation.of("flatfile_err_reading_outlaw_of_town_duplicate", town.getName(), token));
+								}
+							}
+							else {
+								TownyMessaging.sendErrorMsg(Translation.of("flatfile_err_reading_outlaw_of_town_not_exist", town.getName(), token));
+							}
+						}
+					}
 				}
 
 			} catch (Exception e) {
@@ -1845,6 +1856,9 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 		// Primary Jail
 		if (town.getPrimaryJail() != null)
 			list.add("primaryJail=" + town.getPrimaryJail().getUUID());
+		
+		// Techs
+		list.add("techs=" + StringMgmt.join(town.getTechs(), ","));
 		/*
 		 *  Make sure we only save in async
 		 */

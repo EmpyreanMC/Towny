@@ -12,15 +12,7 @@ import com.palmergames.bukkit.towny.exceptions.InvalidNameException;
 import com.palmergames.bukkit.towny.exceptions.KeyAlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.PlotGroup;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.SpawnPoint;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyWorld;
-import com.palmergames.bukkit.towny.object.Translation;
-import com.palmergames.bukkit.towny.object.WorldCoord;
+import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.towny.object.jail.Jail;
 import com.palmergames.bukkit.towny.object.metadata.CustomDataField;
 import com.palmergames.bukkit.towny.object.metadata.MetadataLoader;
@@ -172,7 +164,7 @@ public class TownyUniverse {
 	}
     
     /**
-     * Load config, language and townyperms files.
+     * Load config, language, townyperms, and technology files.
      * 
      * @return true if no exceptions are found.
      */
@@ -181,6 +173,7 @@ public class TownyUniverse {
             TownySettings.loadConfig(rootFolder + File.separator + "settings" + File.separator + "config.yml", towny.getVersion());
             Translation.loadLanguage(rootFolder + File.separator + "settings", "english.yml");
             TownyPerms.loadPerms(rootFolder + File.separator + "settings", "townyperms.yml");
+            TownyTech.loadTechs(rootFolder + File.separator + "settings", "technology.yml");
         } catch (IOException | TownyException e) {
             e.printStackTrace();
             return false;

@@ -72,6 +72,10 @@ public class Town extends Government implements TownBlockOwner {
 	private long ruinedTime;
 	private long joinedNationAt;
 	private Jail primaryJail;
+	
+	private List<Tech> techs = new ArrayList<>();
+	private double research;
+	private Tech researchedTech;
 
 	public Town(String name) {
 		super(name);
@@ -87,6 +91,79 @@ public class Town extends Government implements TownBlockOwner {
 	public Town(String name, UUID uuid) {
 		this(name);
 		setUUID(uuid);
+	}
+
+	public void setTechs(List<Tech> techs) {
+		this.techs = techs;
+	}
+
+	public List<Tech> getTechs() {
+		return techs;
+	}
+	
+	public boolean hasTech(Tech tech) {
+		return techs.contains(tech);
+	}
+	
+	public void addTech(Tech tech) throws AlreadyRegisteredException {
+		if (hasTech(tech))
+			throw new AlreadyRegisteredException(Translation.of("msg_err_tech_already_unlocked"));
+		
+		techs.add(tech);
+	}
+
+	public double getResearch() {
+		return research;
+	}
+
+	public void setResearch(double research) {
+		this.research = research;
+	}
+
+	public void setResearchedTech(Tech researchedTech) {
+		this.researchedTech = researchedTech;
+	}
+
+	public Tech getResearchedTech() {
+		return researchedTech;
+	}
+	
+	public boolean canResearchTech(Tech tech) {
+		return !hasTech(tech) &&
+			techs.containsAll(tech.requires) &&
+			(!tech.nonPeaceful || !isNeutral());
+	}
+	
+	public void startResearchTech(Tech tech) {
+		if (canResearchTech(tech)) {
+			researchedTech = tech;
+		}
+	}
+	
+	public void addResearch(double value) {
+		if (researchedTech == null) {
+			return;
+		}
+		
+		research += value;
+
+		if (research >= researchedTech.cost) {
+			unlockTech(researchedTech);
+			research = 0;
+			researchedTech = null;
+		}
+	}
+	
+	public void unlockTech(Tech tech) {
+		try {
+			addTech(tech);
+		} catch (AlreadyRegisteredException ignored) {
+			return;
+		}
+
+		TownyPerms.updateTownPerms(this);
+		
+		this.save();
 	}
 
 	@Override

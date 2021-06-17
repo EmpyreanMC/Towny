@@ -176,6 +176,18 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.Slimefun</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>RC-19</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.thebusybiscuit</groupId>
+                    <artifactId>cscorelib2</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>

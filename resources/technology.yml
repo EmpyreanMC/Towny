@@ -1,0 +1,236 @@
+manufactory:
+    name: "Manufactory"
+    cost: 50
+    requires: []
+    boost:
+        - "HAY_BLOCK 16"
+    icon: CRAFTING_TABLE
+    x-location: 4
+    lore:
+        - "&3Enhanced Crafting Table"
+        - "&3Grind Stone"
+        - "&3Ore Crusher"
+        - "&3Juicer"
+        - "&3Brewery"
+        - "&710 max. residents"
+    permissions:
+        default:
+            - "slimefun.item.enhancedcrafting"
+            - "slimefun.item.grindstone"
+            - "slimefun.item.orecrusher"
+            - "slimefun.item.juicer"
+            - "brewery.user"
+    max-residents: 10
+
+trade-routes:
+    name: "Trade Routes"
+    cost: 100
+    requires:
+        - "manufactory"
+    boost:
+        - "GOLD_BLOCK 10"
+        - "EMERALD 32"
+    icon: GOLD_NUGGET
+    x-location: 2
+    lore:
+        - "&3The Silk Road"
+        - "&7Wagon"
+        - "&71 Innovation slot"
+        - "&71.5 Research/hour"
+    permissions:
+        default:
+            - "movecraft.wagon.*"
+    innovation-slots: 1
+    research-rate: 1.5
+
+machinery:
+    name: "Machinery"
+    cost: 100
+    requires:
+        - "manufactory"
+    boost:
+        - "SLIMEFUN:COPPER_INGOT 100"
+        - "FLINT 100"
+    icon: GRINDSTONE
+    x-location: 4
+    lore:
+        - "&3Compressor"
+        - "&3Composter"
+        - "&3Crucible"
+        - "&7Table Saw"
+        - "&715 max. residents"
+    permissions:
+        default:
+            - "slimefun.item.compressor"
+            - "slimefun.item.composter"
+            - "slimefun.item.crucible"
+            - "slimefun.item.tablesaw"
+    max-residents: 15
+
+metallurgy:
+    name: "Metallurgy"
+    cost: 100
+    requires:
+        - "manufactory"
+    boost:
+        - "IRON_BLOCK 16"
+        - "COAL_BLOCK 16"
+    icon: ANVIL
+    x-location: 6
+    lore:
+        - "&3Smeltery"
+        - "&3Ore Washer"
+        - "&3Armor Forge"
+    permissions:
+        default:
+            - "slimefun.item.smeltery"
+            - "slimefun.item.orewasher"
+            - "slimefun.item.armorforge"
+
+mass-production:
+    name: "Mass Production"
+    cost: 200
+    requires:
+        - "machinery"
+    boost:
+        - "SLIMEFUN:SILVER_INGOT 150"
+        - "WOOL 300"
+    icon: PISTON
+    x-location: 4
+    lore:
+        - "&3Studies"
+        - "&7Output Chest"
+        - "&72 Research/hour"
+        - "&720 max. residents"
+    permissions:
+        default:
+            - "slimefun.item.studies"
+            - "slimefun.item.outputchest"
+    research-rate: 2
+    max-residents: 20
+
+siege-weaponry:
+    name: "Siege Weaponry"
+    cost: 200
+    requires:
+        - "machinery"
+    boost:
+        - "SLIMEFUN:LEAD_INGOT 150"
+        - "LEAD 50"
+    non-peaceful: true
+    icon: CROSSBOW
+    x-location: 6
+    lore:
+        - "&3Outposts"
+        - "&7Catapult"
+        - "&7Trebuchet"
+    permissions:
+        default:
+            - "cannons.player.*"
+
+printing-press:
+    name: "Printing Press"
+    cost: 300
+    requires:
+        - "trade-routes"
+        - "mass-production"
+    boost:
+        - "SLIMEFUN:BRONZE_INGOT 200"
+        - "WRITABLE_BOOK 300"
+    icon: ENCHANTED_BOOK
+    x-location: 4
+    lore:
+        - "&3Academy"
+        - "&72 Innovation slots"
+        - "&725 max. residents"
+    permissions:
+        default:
+            - "slimefun.item.academy"
+    innovation-slots: 2
+    max-residents: 25
+
+black-powder:
+    name: "Black Powder"
+    cost: 300
+    requires:
+        - "siege-weaponry"
+    boost:
+        - "SLIMEFUN:STEEL_INGOT 150"
+        - "GUNPOWDER 300"
+    non-peaceful: true
+    icon: GUNPOWDER
+    x-location: 6
+    lore:
+        - "&3Arsenal"
+        - "&7Ribaldi"
+        - "&7Bombard"
+        - "&7Mortar"
+        - "&7Firecracker"
+    permissions:
+        default:
+            - ""
+
+cartography:
+    name: "Cartography"
+    cost: 400
+    requires:
+        - "printing-press"
+    boost:
+        - "SLIMEFUN:BILLON_INGOT 250"
+        - "SLIMEFUN:MAGNESIUM_INGOT 300"
+        - "COMPASS 50"
+    non-peaceful: true
+    icon: COMPASS
+    x-location: 2
+    lore:
+        - "&3Naval Sieges"
+        - "&7Sailboat"
+        - "&7Caravel"
+        - "&7Carrack"
+    permissions:
+        default:
+            - "movecraft.siege"
+            - "movecraft.sailboat.*"
+            - "movecraft.caravel.*"
+            - "movecraft.carrack.*"
+
+medical-renaissance:
+    name: "Medical Renaissance"
+    cost: 400
+    requires:
+        - "printing-press"
+    boost:
+        - "SLIMEFUN:CORINTHIAN_BRONZE_INGOT 300"
+        - "SLIMEFUN:BANDAGE 150"
+        - "SLIMEFUN:SPLINT 150"
+    icon: EXPERIENCE_BOTTLE
+    x-location: 4
+    lore:
+        - "&73 Innovation slots"
+        - "&73 Research/hour"
+        - "&735 max. residents"
+    innovation-slots: 3
+    research-rate: 3
+    max-residents: 35
+
+firearms:
+    name: "Firearms"
+    cost: 400
+    requires:
+        - "black-powder"
+    boost:
+        - "SLIMEFUN:DAMASCUS_STEEL_INGOT 200"
+        - "SLIMEFUN:LEAD_INGOT 250"
+        - "GUNPOWDER 300"
+    non-peaceful: true
+    icon: IRON_HORSE_ARMOR
+    x-location: 6
+    lore:
+        - "&7Hand Bombard"
+        - "&7Culverin"
+        - "&7Arquebus"
+        - "&7Musket"
+        - "&7Cast-iron Grenade"
+    permissions:
+        default:
+            - ""

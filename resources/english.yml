@@ -142,6 +142,9 @@ msg_plot_fs: 'Put this area up for auction.'
 # +------------------------------------------------------+ #
 ############################################################
 
+# Tech
+msg_err_tech_already_unlocked: 'That technology is already researched in your town.'
+
 msg_buy: '&bBought %d %s for %s.'
 msg_buy_resident_plot: '&b%s bought %s''s plot for %s!'
 msg_couldnt_pay_taxes: '&b%s couldn''t pay taxes and was kicked from the %s.'

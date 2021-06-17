@@ -5,21 +5,12 @@
  */
 package com.palmergames.bukkit.towny.db;
 
-import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.TownyMessaging;
-import com.palmergames.bukkit.towny.TownySettings;
-import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.*;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.EmptyNationException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.PlotGroup;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlock;
-import com.palmergames.bukkit.towny.object.TownyWorld;
-import com.palmergames.bukkit.towny.object.WorldCoord;
+import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.towny.object.metadata.MetadataLoader;
 import com.palmergames.bukkit.towny.object.jail.Jail;
 import com.palmergames.bukkit.towny.tasks.GatherResidentUUIDTask;
@@ -1145,6 +1136,27 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 					town.setPrimaryJail(TownyUniverse.getInstance().getJail(uuid));
 			}
 
+			line = rs.getString("techs");
+			if (line != null) {
+				search = (line.contains("#")) ? "#" : ",";
+				tokens = line.split(search);
+				for (String token : tokens) {
+					if (!token.isEmpty()) {
+						Tech tech = TownyTech.getTech(token);
+						if (tech != null)
+							town.addTech(tech);
+						else {
+							System.out.println(String.format(
+								"[Towny] Loading Error: Cannot load tech with name '%s' for town '%s'! Skipping adding tech to town...",
+								token, town.getName()
+							));
+						}
+					}
+				}
+			}
+			town.setResearch(rs.getDouble("research"));
+			town.setResearchedTech(TownyTech.getTech(rs.getString("researchedTech")));
+
 			return true;
 		} catch (SQLException e) {
 			TownyMessaging.sendErrorMsg("SQL: Load Town " + name + " sql Error - " + e.getMessage());
@@ -2073,6 +2085,10 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 
 			if (town.getPrimaryJail() != null)
 				twn_hm.put("primaryJail", town.getPrimaryJail().getUUID());
+			
+			twn_hm.put("techs", StringMgmt.join(town.getTechs(), "#"));
+			twn_hm.put("research", town.getResearch());
+			twn_hm.put("researchedTech", town.getResearchedTech().id);
 			
 			UpdateDB("TOWNS", twn_hm, Collections.singletonList("name"));
 			return true;

@@ -5,10 +5,7 @@ import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyWorld;
+import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
 import org.bukkit.configuration.MemorySection;
@@ -253,6 +250,22 @@ public class TownyPerms {
 		if (resident.hasTown()) {
 			try {
 				permList.addAll(getTownDefault(resident.getTown()));
+				
+				//Tech perms
+				List<Tech> techs = resident.getTown().getTechs();
+				for (Tech tech : techs) {
+					permList.addAll(tech.defaultPerms);
+					
+					if (resident.isMayor()) permList.addAll(tech.mayorPerms);
+					
+					if (tech.rankPerms.size() > 0) {
+						for (String rank: resident.getTownRanks()) {
+							if (tech.rankPerms.containsKey(rank)) {
+								permList.addAll(tech.rankPerms.get(rank));
+							}
+						}
+					}
+				}
 			} catch (NotRegisteredException e) {
 				// Not Possible!
 			}

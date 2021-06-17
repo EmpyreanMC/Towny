@@ -449,6 +449,18 @@ public enum ConfigNodes {
 			"  # +------------------------------------------------------+ #",
 			"  ############################################################",
 			""),
+	GTOWN_SETTINGS_BASE_RESEARCH(
+			"global_town_settings.base_research",
+			"1",
+			"",
+			"# The base research rate per hour."
+	),
+	GTOWN_SETTINGS_CAPITAL_RESEARCH(
+			"global_town_settings.capital_research",
+			"1.5",
+			"",
+			"# The research multiplier for nation capitals."
+	),
 	GTOWN_SETTINGS_HEALTH_REGEN(
 			"global_town_settings.health_regen",
 			"",
@@ -664,13 +676,12 @@ public enum ConfigNodes {
 			"",
 			"# The maximum number of residents that can be joined to a town. Setting to 0 disables this feature."
 	),
-	GTOWN_MAX_RESIDENTS_CAPITAL_OVERRIDE(
+	GTOWN_MAX_RESIDENTS_CAPITAL_MULTIPLIER(
 			"global_town_settings.max_residents_capital_override",
-			"0",
+			"1.5",
 			"",
-			"# The maximum number of residents that can be joined to a capital city.", 
-			"# Requires max_residents_capital_override to be above 0.",
-			"# Uses the greater of max_residents_capital_override and max_residents_per_town."
+			"# The multiplier on max_residents_per_town for capital cities.", 
+			"# Requires max_residents_capital_override to be above 0."
 	),
 	GTOWN_SETTINGS_DISPLAY_TOWNBOARD_ONLOGIN(
 			"global_town_settings.display_board_onlogin",

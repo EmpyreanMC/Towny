@@ -7,15 +7,11 @@ import com.palmergames.bukkit.towny.event.NationUpkeepCalculationEvent;
 import com.palmergames.bukkit.towny.event.TownUpkeepCalculationEvent;
 import com.palmergames.bukkit.towny.event.TownUpkeepPenalityCalculationEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.towny.object.NationSpawnLevel.NSpawnLevel;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
 import com.palmergames.bukkit.towny.object.TownSpawnLevel.SpawnLevel;
 import com.palmergames.bukkit.towny.object.TownyPermission.ActionType;
 import com.palmergames.bukkit.towny.object.TownyPermission.PermLevel;
-import com.palmergames.bukkit.towny.object.Translation;
 import com.palmergames.bukkit.towny.permissions.PermissionNodes;
 import com.palmergames.bukkit.towny.utils.EntityTypeUtil;
 import com.palmergames.bukkit.towny.war.common.WarZoneConfig;
@@ -2117,16 +2113,23 @@ public class TownySettings {
 		return getInt(ConfigNodes.GTOWN_MAX_RESIDENTS_PER_TOWN);
 	}
 	
-	public static int getMaxResidentsPerTownCapitalOverride() {
+	public static double getMaxResidentsPerTownCapitalMultiplier() {
 		
-		return Math.max(getInt(ConfigNodes.GTOWN_MAX_RESIDENTS_CAPITAL_OVERRIDE), getMaxResidentsPerTown());
+		return Math.max(getDouble(ConfigNodes.GTOWN_MAX_RESIDENTS_CAPITAL_MULTIPLIER), getMaxResidentsPerTown());
+	}
+
+	public static int getBaseMaxResidentsForTown(Town town) {
+		int base = getMaxResidentsPerTown();
+
+		for (Tech tech : town.getTechs()) {
+			if (tech.maxResidents > base) base = tech.maxResidents;
+		}
+
+		return base;
 	}
 	
 	public static int getMaxResidentsForTown(Town town) {
-		if (town.isCapital())
-			return getMaxResidentsPerTownCapitalOverride();
-		else 
-			return getMaxResidentsPerTown();
+		return (int) (getBaseMaxResidentsForTown(town) * (town.isCapital() ? getMaxResidentsPerTownCapitalMultiplier() : 1));
 	}
 
 	public static boolean isTownyUpdating(String currentVersion) {

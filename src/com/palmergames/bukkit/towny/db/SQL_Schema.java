@@ -173,6 +173,9 @@ public class SQL_Schema {
 		columns.add("`debtBalance` float NOT NULL");
 		columns.add("`joinedNationAt` BIGINT NOT NULL");
 		columns.add("`primaryJail` VARCHAR(36) DEFAULT NULL");
+		columns.add("`techs` mediumtext DEFAULT NULL");
+		columns.add("`research` float NOT NULL DEFAULT '0'");
+		columns.add("`researchedTech` VARCHAR(64) DEFAULT NULL");
 		return columns;
 	}
 

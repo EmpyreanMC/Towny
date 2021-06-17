@@ -1,7 +1,12 @@
 package com.palmergames.bukkit.towny.tasks;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
+import com.palmergames.bukkit.config.ConfigNodes;
+import com.palmergames.bukkit.towny.object.Tech;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 
 import com.palmergames.bukkit.towny.Towny;
@@ -39,6 +44,8 @@ public class HourlyTimerTask extends TownyTimerTask {
 		if (!universe.getJailedResidentMap().isEmpty())
 			decrementJailedHours();
 		
+		addTownResearch();
+		
 		/*
 		 * Fire an event other plugins can use.
 		 */
@@ -57,5 +64,37 @@ public class HourlyTimerTask extends TownyTimerTask {
 					resident.setJailHours(resident.getJailHours() - 1);
 					resident.save();
 				}
+	}
+	
+	private void addTownResearch() {
+		List<Town> towns = new ArrayList<>(universe.getDataSource().getTowns());
+		ListIterator<Town> townItr = towns.listIterator();
+		Town town;
+
+		while (townItr.hasNext()) {
+			town = townItr.next();
+			/*
+			 * Only add research for this town if it really still
+			 * exists.
+			 * We are running in an Async thread so MUST verify all objects.
+			 */
+			if (universe.getDataSource().hasTown(town.getName()) && !town.isRuined())
+				addTownResearch(town);
+		}
+	}
+
+	private void addTownResearch(Town town) {
+		if (town.getResearchedTech() == null) {
+			return;
+		}
+		
+		// https://www.youtube.com/watch?v=_xp3zG-d7w8
+		double base = TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_BASE_RESEARCH);
+		
+		for (Tech tech : town.getTechs()) {
+			if (tech.researchRate > base) base = tech.researchRate;
+		}
+		
+		town.addResearch(base * (town.isCapital() ? TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_CAPITAL_RESEARCH) : 1));
 	}
 }
