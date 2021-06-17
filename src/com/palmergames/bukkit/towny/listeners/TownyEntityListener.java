@@ -33,6 +33,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.entity.Villager;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -702,7 +703,7 @@ public class TownyEntityListener implements Listener {
 		
 		// TODO: Keep an eye on https://hub.spigotmc.org/jira/browse/SPIGOT-3999 to be completed.
 		// This workaround prevent boats from destroying item_frames.
-		if (event.getCause().equals(RemoveCause.PHYSICS) && hanging.getType().equals(EntityType.ITEM_FRAME)) {
+		if (event.getCause().equals(RemoveCause.PHYSICS) && ItemLists.ITEM_FRAMES.contains(hanging.getType().name())) {
 			Location loc = hanging.getLocation().add(hanging.getFacing().getOppositeFace().getDirection());
 			Block block = loc.getBlock();
 			if (block.isLiquid() || block.isEmpty())
@@ -737,6 +738,7 @@ public class TownyEntityListener implements Listener {
 					case PAINTING:
 					case LEASH_HITCH:
 					case ITEM_FRAME:
+					case GLOW_ITEM_FRAME:
 						mat = EntityTypeUtil.parseEntityToMaterial(event.getEntity().getType());
 						break;
 					default:
@@ -809,6 +811,7 @@ public class TownyEntityListener implements Listener {
 			case PAINTING:
 			case LEASH_HITCH:
 			case ITEM_FRAME:
+			case GLOW_ITEM_FRAME:				
 				mat = EntityTypeUtil.parseEntityToMaterial(event.getEntity().getType());
 				break;
 			default:
@@ -857,8 +860,9 @@ public class TownyEntityListener implements Listener {
 			//Make decision on whether this is allowed using the PlayerCache and then a cancellable event.
 			if (!TownyActionEventExecutor.canSwitch((Player) event.getEntity().getShooter(), block.getLocation(), material)) {
 				/*
-				 * Since we are unable to cancel a ProjectileHitEvent we must
-				 * set the block to air then set it back to its original form. 
+				 * Since we are unable to cancel a ProjectileHitEvent on buttons & 
+				 * pressure plates even using MC 1.17 we must set the block to air
+				 * then set it back to its original form. 
 				 */
 				BlockData data = block.getBlockData();
 				block.setType(Material.AIR);
@@ -883,13 +887,18 @@ public class TownyEntityListener implements Listener {
 		if (event.getHitBlock().getType() == Material.TARGET && TownySettings.isSwitchMaterial(Material.TARGET.name())) {
 			//Make decision on whether this is allowed using the PlayerCache and then a cancellable event.
 			if (!TownyActionEventExecutor.canSwitch((Player) event.getEntity().getShooter(), event.getHitBlock().getLocation(), Material.TARGET)) {
-				/*
-				 * Since we are unable to cancel a ProjectileHitEvent we must
-				 * set the block to air then set it back to its original form. 
-				 */
-				BlockData data = event.getHitBlock().getBlockData();
-				event.getHitBlock().setType(Material.AIR);
-				BukkitTools.getScheduler().runTask(plugin, () -> event.getHitBlock().setBlockData(data));
+				
+				if (event instanceof Cancellable) { //TODO: When support is dropped for pre-1.17 MC versions the else can be removed.
+					event.setCancelled(true);
+				} else {
+					/*
+					 * Since we are unable to cancel a ProjectileHitEvent before MC 1.17 we must
+					 * set the block to air then set it back to its original form. 
+					 */
+					BlockData data = event.getHitBlock().getBlockData();
+					event.getHitBlock().setType(Material.AIR);
+					BukkitTools.getScheduler().runTask(plugin, () -> event.getHitBlock().setBlockData(data));
+				}
 			}
 		}
 	}

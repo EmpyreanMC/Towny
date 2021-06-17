@@ -39,6 +39,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("deprecation")
 public class TownySettings {
 
 	// Town Level
@@ -1407,6 +1408,11 @@ public class TownySettings {
 	public static double getNationNeutralityCost() {
 
 		return getDouble(ConfigNodes.ECO_PRICE_NATION_NEUTRALITY);
+	}
+	
+	public static double getTownNeutralityCost() {
+		
+		return getDouble(ConfigNodes.ECO_PRICE_TOWN_NEUTRALITY);
 	}
 
 	public static boolean isAllowingOutposts() {
@@ -3098,6 +3104,10 @@ public class TownySettings {
 	
 	public static List<String> getTouristBlockedCommands() {
 		return getStrArr(ConfigNodes.GTOWN_TOWN_TOURIST_BLOCKED_COMMANDS);
+	}
+	
+	public static boolean isContextsEnabled() {
+		return getBoolean(ConfigNodes.PLUGINS_LUCKPERMS_CONTEXTS);
 	}
 }
 
