@@ -4,7 +4,9 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class SlimefunBooster implements Booster {
+import java.util.Objects;
+
+public class SlimefunBooster extends Booster {
 	
 	private final SlimefunItem sfItem;
 	private final int qty;
@@ -28,5 +30,23 @@ public class SlimefunBooster implements Booster {
 	@Override
 	public boolean canBoost(Player player) {
 		return player.getInventory().containsAtLeast(sfItem.getItem(), qty);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (o == null)
+			return false;
+		if (!(o instanceof SlimefunBooster))
+			return false;
+		SlimefunBooster other = (SlimefunBooster) o;
+		return Objects.equals(sfItem, other.sfItem) &&
+			Objects.equals(qty, other.qty);
+	}
+
+	@Override
+	public String getName() {
+		return "SLIMEFUN:" + sfItem.getId() + " " + qty;
 	}
 }

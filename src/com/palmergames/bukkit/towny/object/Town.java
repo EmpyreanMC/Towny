@@ -1,5 +1,6 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.palmergames.bukkit.config.ConfigNodes;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownyMessaging;
@@ -23,17 +24,11 @@ import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -73,9 +68,10 @@ public class Town extends Government implements TownBlockOwner {
 	private long joinedNationAt;
 	private Jail primaryJail;
 	
-	private List<Tech> techs = new ArrayList<>();
+	private final List<Tech> techs = new ArrayList<>();
 	private double research;
 	private Tech researchedTech;
+	private final List<Booster> completedBoosters = new ArrayList<>();
 
 	public Town(String name) {
 		super(name);
@@ -91,10 +87,6 @@ public class Town extends Government implements TownBlockOwner {
 	public Town(String name, UUID uuid) {
 		this(name);
 		setUUID(uuid);
-	}
-
-	public void setTechs(List<Tech> techs) {
-		this.techs = techs;
 	}
 
 	public List<Tech> getTechs() {
@@ -127,7 +119,18 @@ public class Town extends Government implements TownBlockOwner {
 	public Tech getResearchedTech() {
 		return researchedTech;
 	}
-	
+
+	public List<Booster> getCompletedBoosters() {
+		return completedBoosters;
+	}
+
+	public void addCompletedBooster(Booster booster) throws AlreadyRegisteredException {
+		if (completedBoosters.contains(booster))
+			throw new AlreadyRegisteredException(Translation.of("msg_err_tech_already_unlocked"));
+
+		completedBoosters.add(booster);
+	}
+
 	public boolean canResearchTech(Tech tech) {
 		return !hasTech(tech) &&
 			techs.containsAll(tech.requires) &&
@@ -151,6 +154,7 @@ public class Town extends Government implements TownBlockOwner {
 			unlockTech(researchedTech);
 			research = 0;
 			researchedTech = null;
+			completedBoosters.clear();
 		}
 	}
 	
@@ -164,6 +168,30 @@ public class Town extends Government implements TownBlockOwner {
 		TownyPerms.updateTownPerms(this);
 		
 		this.save();
+	}
+	
+	public List<Booster> boost(Player player) {
+		if (isBoosted()) return null;
+		
+		List<Booster> completed = new ArrayList<>();
+		
+		for (Booster booster : researchedTech.boosts) {
+			if (!completedBoosters.contains(booster) && booster.boost(player)) {
+				completed.add(booster);
+				completedBoosters.add(booster);
+			}
+		}
+		
+		if (isBoosted()) {
+			double percent = TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_BOOST_PERCENTAGE);
+			addResearch(researchedTech.cost * percent / 100);
+		}
+		
+		return completed;
+	}
+	
+	public boolean isBoosted() {
+		return researchedTech != null && completedBoosters.size() == researchedTech.boosts.size();
 	}
 
 	@Override

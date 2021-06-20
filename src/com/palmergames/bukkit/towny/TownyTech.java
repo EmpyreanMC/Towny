@@ -89,26 +89,6 @@ public class TownyTech {
     }
     
     private static List<Booster> parseBoost(List<String> boosters) {
-    	return boosters.stream().map(booster -> {
-    		String[] split = booster.split(" ");
-    		
-			String item = split[0];
-			int qty = Integer.parseInt(split[1]);
-			
-			if (item.startsWith("SLIMEFUN:")) {
-				SlimefunItem sfItem = SlimefunItem.getByID(item.substring(9));
-				
-				if (sfItem != null) {
-					return new SlimefunBooster(sfItem, qty);
-				}
-			} else {
-				Material material = Material.matchMaterial(item);
-				
-				if (material != null) {
-					return new ItemBooster(new ItemStack(material, qty));
-				}
-			}
-			return null;
-		}).collect(Collectors.toList());
+    	return boosters.stream().map(Booster::fromString).collect(Collectors.toList());
 	}
 }

@@ -1,10 +1,46 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.palmergames.bukkit.towny.Towny;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-public interface Booster {
+public abstract class Booster implements Nameable {
 	
-	boolean boost(Player player);
+	public abstract boolean boost(Player player);
 	
-	boolean canBoost(Player player);
+	public abstract boolean canBoost(Player player);
+
+	@Override
+	public abstract boolean equals(Object obj);
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
+	public static Booster fromString(String string) {
+		String[] split = string.split(" ");
+
+		String item = split[0];
+		int qty = Integer.parseInt(split[1]);
+
+		if (item.startsWith("SLIMEFUN:")) {
+			if (Towny.getPlugin().getServer().getPluginManager().isPluginEnabled("Slimefun")) {
+				SlimefunItem sfItem = SlimefunItem.getByID(item.substring(9));
+
+				if (sfItem != null) {
+					return new SlimefunBooster(sfItem, qty);
+				}
+			}
+		} else {
+			Material material = Material.matchMaterial(item);
+
+			if (material != null) {
+				return new ItemBooster(new ItemStack(material, qty));
+			}
+		}
+		return null;
+	}
 }

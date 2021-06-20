@@ -1158,6 +1158,24 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			}
 			town.setResearch(rs.getDouble("research"));
 			town.setResearchedTech(TownyTech.getTech(rs.getString("researchedTech")));
+			line = rs.getString("completedBoosters");
+			if (line != null) {
+				search = (line.contains("#")) ? "#" : ",";
+				tokens = line.split(search);
+				for (String token : tokens) {
+					if (!token.isEmpty()) {
+						Booster booster = Booster.fromString(token);
+						if (booster != null)
+							town.addCompletedBooster(booster);
+						else {
+							System.out.println(String.format(
+								"[Towny] Loading Error: Cannot load completed booster with name '%s' for town '%s'! Skipping adding booster to town...",
+								token, town.getName()
+							));
+						}
+					}
+				}
+			}
 
 			return true;
 		} catch (SQLException e) {
@@ -2091,6 +2109,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			twn_hm.put("techs", StringMgmt.join(town.getTechs(), "#"));
 			twn_hm.put("research", town.getResearch());
 			twn_hm.put("researchedTech", town.getResearchedTech().id);
+			twn_hm.put("completedBoosters", StringMgmt.join(town.getCompletedBoosters(), "#"));
 			
 			UpdateDB("TOWNS", twn_hm, Collections.singletonList("name"));
 			return true;

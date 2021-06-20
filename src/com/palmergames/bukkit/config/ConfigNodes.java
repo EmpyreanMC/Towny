@@ -461,6 +461,12 @@ public enum ConfigNodes {
 			"",
 			"# The research multiplier for nation capitals."
 	),
+	GTOWN_SETTINGS_BOOST_PERCENTAGE(
+			"global_town_settings.boost_percentage",
+			"75",
+			"",
+			"# Boosts reduce tech costs by boost_percentage percent."
+	),
 	GTOWN_SETTINGS_HEALTH_REGEN(
 			"global_town_settings.health_regen",
 			"",
