@@ -17,8 +17,9 @@ public class SlimefunBooster extends Booster {
 	}
 
 	@Override
-	public boolean boost(Player player) {
-		if (canBoost(player)) {
+	public boolean boost(Resident resident) {
+		Player player = resident.getPlayer();
+		if (player != null && canBoost(resident)) {
 			ItemStack item = sfItem.getItem();
 			item.setAmount(qty);
 			player.getInventory().removeItem(item);
@@ -28,8 +29,9 @@ public class SlimefunBooster extends Booster {
 	}
 
 	@Override
-	public boolean canBoost(Player player) {
-		return player.getInventory().containsAtLeast(sfItem.getItem(), qty);
+	public boolean canBoost(Resident resident) {
+		Player player = resident.getPlayer();
+		return player != null && player.getInventory().containsAtLeast(sfItem.getItem(), qty);
 	}
 
 	@Override

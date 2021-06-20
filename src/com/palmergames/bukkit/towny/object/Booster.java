@@ -3,14 +3,13 @@ package com.palmergames.bukkit.towny.object;
 import com.palmergames.bukkit.towny.Towny;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Booster implements Nameable {
 	
-	public abstract boolean boost(Player player);
+	public abstract boolean boost(Resident resident);
 	
-	public abstract boolean canBoost(Player player);
+	public abstract boolean canBoost(Resident resident);
 
 	@Override
 	public abstract boolean equals(Object obj);
