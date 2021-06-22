@@ -146,11 +146,12 @@ public class TechUtil {
 						break;
 					case RESEARCH_BOOSTED:
 						color = Colors.Yellow;
-						info.add(Colors.Gold + "Researching... (BOOSTED!)");
+						info.add(Colors.translateColorCodes("&6Researching... &e" + town.getResearch() + "&6/" + tech.cost));
+						info.add(Colors.translateColorCodes("&6&oBoosted!"));
 						break;
 					case RESEARCH:
 						color = Colors.LightBlue;
-						info.add(Colors.Blue + "Researching...");
+						info.add(Colors.translateColorCodes("&3Researching... &b" + town.getResearch() + "&3/" + tech.cost));
 						info.add(Colors.Blue + "Click to boost research!");
 						break;
 					case CAN_RESEARCH:
@@ -159,7 +160,7 @@ public class TechUtil {
 							info.add(Colors.Green + "Click to begin research!");
 						} else {
 							info.add(Colors.Green + "We may begin research!");
-							info.add(Colors.Green + "Ask the mayor to begin.");
+							info.add(Colors.Green + "Ask the mayor to begin it.");
 						}
 						break;
 					case CAN_CHANGE_RESEARCH:
@@ -187,8 +188,14 @@ public class TechUtil {
 					lore.addAll(info);
 					lore.add(" ");
 				}
-				lore.addAll(state == TechState.RESEARCH ? getBoosters(town, tech) :
-					tech.guiLore.stream().map(Colors::translateColorCodes).collect(Collectors.toList()));
+				
+				if (state == TechState.RESEARCH) {
+					lore.add(Colors.LightGray + "Boost: " + town.getCompletedBoosters().size() + "/" + tech.boosts.size());
+					lore.addAll(getBoosters(town, tech));
+				} else {
+					lore.addAll(tech.guiLore.stream().map(Colors::translateColorCodes).collect(Collectors.toList()));
+				}
+				
 				meta.setLore(lore);
 				
 				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -286,7 +293,7 @@ public class TechUtil {
 		for (Booster booster : boosters) {
 			boolean completed = town.getCompletedBoosters().contains(booster);
 			lore.add(Colors.translateColorCodes(
-				(completed ? "&7" : "&6") + " > " + (completed ? "&7&m" : "&6") + booster.getFormattedName()));
+				(completed ? "&8" : "&6") + " ➢ " + (completed ? "&8&m" : "&6") + booster.getFormattedName()));
 		}
 		
 		return lore;

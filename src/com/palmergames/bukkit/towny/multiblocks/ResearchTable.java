@@ -1,12 +1,12 @@
 package com.palmergames.bukkit.towny.multiblocks;
 
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyMessaging;
-import com.palmergames.bukkit.towny.TownyTech;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.utils.ResidentUtil;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.Translation;
 import com.palmergames.bukkit.towny.utils.TechUtil;
-import com.palmergames.bukkit.util.Colors;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -32,9 +32,14 @@ public class ResearchTable extends MultiBlockMachine {
 		if (resident == null) return;
 		
 		if (resident.hasTown()) {
-			TechUtil.openTechGUI(resident, -1);
+			Town town = TownyAPI.getInstance().getTown(block.getLocation());
+			if (town != null && town.hasResident(resident)) {
+				TechUtil.openTechGUI(resident, -1);
+			} else {
+				TownyMessaging.sendMessage(player, Translation.of("msg_research_table_outside_town"));
+			}
 		} else {
-			TownyMessaging.sendMessage(player, Colors.Rose + "You have to be in a town to use a Research Table!");
+			TownyMessaging.sendMessage(player, Translation.of("msg_research_table_without_town"));
 		}
     }
 }

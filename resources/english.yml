@@ -144,6 +144,8 @@ msg_plot_fs: 'Put this area up for auction.'
 
 # Tech
 msg_err_tech_already_unlocked: 'That technology is already researched in your town.'
+msg_research_table_without_town: '&cYou have to be in a town to use a Research Table!'
+msg_research_table_outside_town: '&cYou can only use Research Tables within your town!'
 
 msg_buy: '&bBought %d %s for %s.'
 msg_buy_resident_plot: '&b%s bought %s''s plot for %s!'
@@ -752,6 +754,8 @@ status_bank_town3: ' &7| &2Tax: &4%s'
 status_town_nation: '&2Nation: &a%s'
 status_town_reslist_overlength: 'and more...'
 status_town_reslist: '&2Residents &a[%s]&2: &f'
+status_town_techs: '&2Technologies: &a%s'
+status_town_research: '&2Researching: &a%s &2(&a%s&2/%s)'
 status_nation_peaceful: '&7Peaceful'
 status_nation_king: '&2King: &a%s'
 status_nation_tax: '  &2NationTax: &4%s'
@@ -1426,5 +1430,4 @@ your_town_has_been_invited_to_join_nation: 'Your town has been invited to join t
 msg_err_no_one_to_purge: '&bThere are no inactive members to purge.'
 msg_purging_will_remove_the_following_residents: '&bPlease confirm you want to purge the following residents: %s'
 msg_purge_complete_x_removed: '&bPurge complete, %s residents removed.'
-msg_err_days_must_be_greater_than_0: 'Days must be greater than zero.'
 msg_err_days_must_be_greater_than_0: 'Days must be greater than zero.'
