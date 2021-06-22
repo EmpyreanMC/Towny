@@ -112,6 +112,10 @@ public class TownRuinUtil {
 		if (TownySettings.getMaxResidentsPerTown() > 0)
 			ResidentUtil.reduceResidentCountToFitTownMaxPop(town);
 		
+		// Clear all technologies and research
+		town.getTechs().clear();
+		town.resetResearch();
+		
 		town.save();
 		plugin.resetCache();
 		
