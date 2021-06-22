@@ -2108,7 +2108,8 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			
 			twn_hm.put("techs", StringMgmt.join(town.getTechs(), "#"));
 			twn_hm.put("research", town.getResearch());
-			twn_hm.put("researchedTech", town.getResearchedTech().id);
+			if (town.getResearchedTech() != null)
+				twn_hm.put("researchedTech", town.getResearchedTech().id);
 			twn_hm.put("completedBoosters", StringMgmt.join(town.getCompletedBoosters(), "#"));
 			
 			UpdateDB("TOWNS", twn_hm, Collections.singletonList("name"));

@@ -350,6 +350,13 @@ public class Towny extends JavaPlugin {
 			new LuckPermsContexts();
 			addons.add(String.format("%s v%s", "LuckPerms", test.getDescription().getVersion()));
 		}
+		
+		test = getServer().getPluginManager().getPlugin("Slimefun");
+		if (test != null) {
+			addons.add(String.format("%s v%s", "Slimefun", test.getDescription().getVersion()));
+			// Register Slimefun items and multiblocks
+			new TownySlimefunAddon();
+		}
 
 		//Add our chat handler to TheNewChat via the API.
 		if(Bukkit.getPluginManager().isPluginEnabled("TheNewChat")) {

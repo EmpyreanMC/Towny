@@ -130,7 +130,9 @@ public class Town extends Government implements TownBlockOwner {
 	
 	public void startResearchTech(Tech tech) {
 		if (canResearchTech(tech)) {
+			resetResearch();
 			researchedTech = tech;
+			this.save();
 		}
 	}
 	
@@ -143,10 +145,14 @@ public class Town extends Government implements TownBlockOwner {
 
 		if (research >= researchedTech.cost) {
 			unlockTech(researchedTech);
-			research = 0;
-			researchedTech = null;
-			completedBoosters.clear();
+			resetResearch();
 		}
+	}
+	
+	public void resetResearch() {
+		research = 0;
+		researchedTech = null;
+		completedBoosters.clear();
 	}
 	
 	public void unlockTech(Tech tech) {
@@ -176,6 +182,10 @@ public class Town extends Government implements TownBlockOwner {
 		if (isBoosted()) {
 			double percent = TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_BOOST_PERCENTAGE);
 			addResearch(researchedTech.cost * percent / 100);
+		}
+
+		if (!completed.isEmpty()) {
+			this.save();
 		}
 		
 		return completed;

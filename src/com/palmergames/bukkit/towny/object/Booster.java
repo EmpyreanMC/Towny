@@ -15,6 +15,12 @@ public abstract class Booster implements Nameable {
 	public abstract boolean equals(Object obj);
 
 	@Override
+	public abstract String getName();
+
+	@Override
+	public abstract String getFormattedName();
+
+	@Override
 	public String toString() {
 		return getName();
 	}

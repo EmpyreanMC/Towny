@@ -1,7 +1,10 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.palmergames.util.StringMgmt;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
 
@@ -44,5 +47,19 @@ public class ItemBooster extends Booster {
 	@Override
 	public String getName() {
 		return item.getType() + " " + item.getAmount();
+	}
+
+	@Override
+	public String getFormattedName() {
+		ItemMeta meta = item.getItemMeta();
+		String name;
+		if (meta.hasLocalizedName()) {
+			name = meta.getLocalizedName();
+		} else if (meta.hasDisplayName()) {
+			name = meta.getDisplayName();
+		} else {
+			name = WordUtils.capitalizeFully(StringMgmt.remUnderscore(item.getType().toString()));
+		}
+		return item.getAmount() + " " + name;
 	}
 }

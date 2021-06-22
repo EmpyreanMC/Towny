@@ -51,4 +51,9 @@ public class SlimefunBooster extends Booster {
 	public String getName() {
 		return "SLIMEFUN:" + sfItem.getId() + " " + qty;
 	}
+
+	@Override
+	public String getFormattedName() {
+		return qty + " " + sfItem.getItemName();
+	}
 }

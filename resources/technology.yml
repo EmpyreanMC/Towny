@@ -4,15 +4,6 @@ manufactory:
     requires: []
     boost:
         - "HAY_BLOCK 16"
-    icon: CRAFTING_TABLE
-    x-location: 4
-    lore:
-        - "&3Enhanced Crafting Table"
-        - "&3Grind Stone"
-        - "&3Ore Crusher"
-        - "&3Juicer"
-        - "&3Brewery"
-        - "&710 max. residents"
     permissions:
         default:
             - "slimefun.item.enhancedcrafting"
@@ -21,6 +12,18 @@ manufactory:
             - "slimefun.item.juicer"
             - "brewery.user"
     max-residents: 10
+    gui:
+        x: 4
+        y: 1
+        icon: CRAFTING_TABLE
+        lore:
+            - "&3Enhanced Crafting Table"
+            - "&3Grind Stone"
+            - "&3Ore Crusher"
+            - "&3Juicer"
+            - "&3Brewery"
+            - "&710 max. residents"
+        roots: []
 
 trade-routes:
     name: "Trade Routes"
@@ -30,18 +33,26 @@ trade-routes:
     boost:
         - "GOLD_BLOCK 10"
         - "EMERALD 32"
-    icon: GOLD_NUGGET
-    x-location: 2
-    lore:
-        - "&3The Silk Road"
-        - "&7Wagon"
-        - "&71 Innovation slot"
-        - "&71.5 Research/hour"
     permissions:
         default:
             - "movecraft.wagon.*"
     innovation-slots: 1
     research-rate: 1.5
+    gui:
+        x: 2
+        y: 5
+        icon: GOLD_NUGGET
+        lore:
+            - "&3The Silk Road"
+            - "&7Wagon"
+            - "&71 Innovation slot"
+            - "&71.5 Research/hour"
+        roots:
+            - 4,2
+            - 4,3
+            - 3,3
+            - 2,3
+            - 2,4
 
 machinery:
     name: "Machinery"
@@ -51,14 +62,6 @@ machinery:
     boost:
         - "SLIMEFUN:COPPER_INGOT 100"
         - "FLINT 100"
-    icon: GRINDSTONE
-    x-location: 4
-    lore:
-        - "&3Compressor"
-        - "&3Composter"
-        - "&3Crucible"
-        - "&7Table Saw"
-        - "&715 max. residents"
     permissions:
         default:
             - "slimefun.item.compressor"
@@ -66,6 +69,20 @@ machinery:
             - "slimefun.item.crucible"
             - "slimefun.item.tablesaw"
     max-residents: 15
+    gui:
+        x: 4
+        y: 5
+        icon: GRINDSTONE
+        lore:
+            - "&3Compressor"
+            - "&3Composter"
+            - "&3Crucible"
+            - "&7Table Saw"
+            - "&715 max. residents"
+        roots:
+            - 4,2
+            - 4,3
+            - 4,4
 
 metallurgy:
     name: "Metallurgy"
@@ -75,17 +92,25 @@ metallurgy:
     boost:
         - "IRON_BLOCK 16"
         - "COAL_BLOCK 16"
-    icon: ANVIL
-    x-location: 6
-    lore:
-        - "&3Smeltery"
-        - "&3Ore Washer"
-        - "&3Armor Forge"
     permissions:
         default:
             - "slimefun.item.smeltery"
             - "slimefun.item.orewasher"
             - "slimefun.item.armorforge"
+    gui:
+        x: 6
+        y: 5
+        icon: ANVIL
+        lore:
+            - "&3Smeltery"
+            - "&3Ore Washer"
+            - "&3Armor Forge"
+        roots:
+            - 4,2
+            - 4,3
+            - 5,3
+            - 6,3
+            - 6,4
 
 mass-production:
     name: "Mass Production"
@@ -95,19 +120,25 @@ mass-production:
     boost:
         - "SLIMEFUN:SILVER_INGOT 150"
         - "WOOL 300"
-    icon: PISTON
-    x-location: 4
-    lore:
-        - "&3Studies"
-        - "&7Output Chest"
-        - "&72 Research/hour"
-        - "&720 max. residents"
     permissions:
         default:
             - "slimefun.item.studies"
             - "slimefun.item.outputchest"
     research-rate: 2
     max-residents: 20
+    gui:
+        x: 4
+        y: 9
+        icon: PISTON
+        lore:
+            - "&3Studies"
+            - "&7Output Chest"
+            - "&72 Research/hour"
+            - "&720 max. residents"
+        roots:
+            - 4,6
+            - 4,7
+            - 4,8
 
 siege-weaponry:
     name: "Siege Weaponry"
@@ -118,15 +149,23 @@ siege-weaponry:
         - "SLIMEFUN:LEAD_INGOT 150"
         - "LEAD 50"
     non-peaceful: true
-    icon: CROSSBOW
-    x-location: 6
-    lore:
-        - "&3Outposts"
-        - "&7Catapult"
-        - "&7Trebuchet"
     permissions:
         default:
             - "cannons.player.*"
+    gui:
+        x: 6
+        y: 9
+        icon: CROSSBOW
+        lore:
+            - "&3Outposts"
+            - "&7Catapult"
+            - "&7Trebuchet"
+        roots:
+            - 4,6
+            - 4,7
+            - 5,7
+            - 6,7
+            - 6,8
 
 printing-press:
     name: "Printing Press"
@@ -137,17 +176,30 @@ printing-press:
     boost:
         - "SLIMEFUN:BRONZE_INGOT 200"
         - "WRITABLE_BOOK 300"
-    icon: ENCHANTED_BOOK
-    x-location: 4
-    lore:
-        - "&3Academy"
-        - "&72 Innovation slots"
-        - "&725 max. residents"
     permissions:
         default:
             - "slimefun.item.academy"
     innovation-slots: 2
     max-residents: 25
+    gui:
+        x: 4
+        y: 13
+        icon: ENCHANTED_BOOK
+        lore:
+            - "&3Academy"
+            - "&72 Innovation slots"
+            - "&725 max. residents"
+        roots:
+            - 2,6
+            - 2,7
+            - 2,8
+            - 2,9
+            - 2,10
+            - 2,11
+            - 3,11
+            - 4,10
+            - 4,11
+            - 4,12
 
 black-powder:
     name: "Black Powder"
@@ -158,17 +210,23 @@ black-powder:
         - "SLIMEFUN:STEEL_INGOT 150"
         - "GUNPOWDER 300"
     non-peaceful: true
-    icon: GUNPOWDER
-    x-location: 6
-    lore:
-        - "&3Arsenal"
-        - "&7Ribaldi"
-        - "&7Bombard"
-        - "&7Mortar"
-        - "&7Firecracker"
     permissions:
         default:
             - ""
+    gui:
+        x: 6
+        y: 13
+        icon: GUNPOWDER
+        lore:
+            - "&3Arsenal"
+            - "&7Ribaldi"
+            - "&7Bombard"
+            - "&7Mortar"
+            - "&7Firecracker"
+        roots:
+            - 6,10
+            - 6,11
+            - 6,12
 
 cartography:
     name: "Cartography"
@@ -180,19 +238,27 @@ cartography:
         - "SLIMEFUN:MAGNESIUM_INGOT 300"
         - "COMPASS 50"
     non-peaceful: true
-    icon: COMPASS
-    x-location: 2
-    lore:
-        - "&3Naval Sieges"
-        - "&7Sailboat"
-        - "&7Caravel"
-        - "&7Carrack"
     permissions:
         default:
             - "movecraft.siege"
             - "movecraft.sailboat.*"
             - "movecraft.caravel.*"
             - "movecraft.carrack.*"
+    gui:
+        x: 2
+        y: 17
+        icon: COMPASS
+        lore:
+            - "&3Naval Sieges"
+            - "&7Sailboat"
+            - "&7Caravel"
+            - "&7Carrack"
+        roots:
+            - 4,14
+            - 4,15
+            - 3,15
+            - 2,15
+            - 2,16
 
 medical-renaissance:
     name: "Medical Renaissance"
@@ -203,15 +269,21 @@ medical-renaissance:
         - "SLIMEFUN:CORINTHIAN_BRONZE_INGOT 300"
         - "SLIMEFUN:BANDAGE 150"
         - "SLIMEFUN:SPLINT 150"
-    icon: EXPERIENCE_BOTTLE
-    x-location: 4
-    lore:
-        - "&73 Innovation slots"
-        - "&73 Research/hour"
-        - "&735 max. residents"
     innovation-slots: 3
     research-rate: 3
     max-residents: 35
+    gui:
+        x: 4
+        y: 17
+        icon: EXPERIENCE_BOTTLE
+        lore:
+            - "&73 Innovation slots"
+            - "&73 Research/hour"
+            - "&735 max. residents"
+        roots:
+            - 4,14
+            - 4,15
+            - 4,16
 
 firearms:
     name: "Firearms"
@@ -223,14 +295,20 @@ firearms:
         - "SLIMEFUN:LEAD_INGOT 250"
         - "GUNPOWDER 300"
     non-peaceful: true
-    icon: IRON_HORSE_ARMOR
-    x-location: 6
-    lore:
-        - "&7Hand Bombard"
-        - "&7Culverin"
-        - "&7Arquebus"
-        - "&7Musket"
-        - "&7Cast-iron Grenade"
     permissions:
         default:
             - ""
+    gui:
+        x: 6
+        y: 17
+        icon: IRON_HORSE_ARMOR
+        lore:
+            - "&7Hand Bombard"
+            - "&7Culverin"
+            - "&7Arquebus"
+            - "&7Musket"
+            - "&7Cast-iron Grenade"
+        roots:
+            - 6,14
+            - 6,15
+            - 6,16

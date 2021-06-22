@@ -1,6 +1,12 @@
 package com.palmergames.bukkit.towny.multiblocks;
 
+import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyTech;
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.utils.ResidentUtil;
+import com.palmergames.bukkit.towny.utils.TechUtil;
+import com.palmergames.bukkit.util.Colors;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -21,6 +27,14 @@ public class ResearchTable extends MultiBlockMachine {
 
     @Override
     public void onInteract(Player player, Block block) {
-        player.sendMessage(TownyTech.getTech("metallurgy").getName());
+		Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+		
+		if (resident == null) return;
+		
+		if (resident.hasTown()) {
+			TechUtil.openTechGUI(resident, -1);
+		} else {
+			TownyMessaging.sendMessage(player, Colors.Rose + "You have to be in a town to use a Research Table!");
+		}
     }
 }

@@ -1,13 +1,18 @@
 package com.palmergames.bukkit.towny.listeners;
 
+import com.palmergames.bukkit.towny.TownyTech;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.*;
+import com.palmergames.bukkit.towny.utils.TechUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.TownyInventory;
 import com.palmergames.bukkit.util.Colors;
+import org.bukkit.inventory.ItemFlag;
+
+import java.util.Objects;
 
 public class TownyInventoryListener implements Listener {
 
@@ -26,6 +31,41 @@ public class TownyInventoryListener implements Listener {
 		
 		if (resident == null)
 			return;
+		
+		if (event.getCurrentItem() == null) 
+			return;
+		
+		if (event.getInventory().getHolder() instanceof TownyTechInventory) {
+			int scroll = ((TownyTechInventory) event.getInventory().getHolder()).scroll;
+			// Up
+			if (event.getSlot() == 44) {
+				TechUtil.openTechGUI(resident, scroll - 1);
+			}
+			// Down
+			if (event.getSlot() == 53) {
+				TechUtil.openTechGUI(resident, scroll + 1);
+			}
+			// Jump to current
+			if (event.getSlot() == 8) {
+				TechUtil.openTechGUI(resident, -1);
+			}
+			// Tech
+			if (event.getCurrentItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_DESTROYS)) {
+				Tech tech = TownyTech.getTechByName(Colors.strip(event.getCurrentItem().getItemMeta().getDisplayName()));
+				try {
+					Town town = resident.getTown();
+					if (Objects.equals(town.getResearchedTech(), tech)) {
+						if (!town.isBoosted()) {
+							town.boost(resident);
+						}
+					} else if (town.canResearchTech(tech)) {
+						town.startResearchTech(tech);
+					}
+				} catch (NotRegisteredException ignored) { }
+				TechUtil.openTechGUI(resident, scroll);
+			}
+			return;
+		}
 
 		int currentPage = resident.getGUIPageNum();
 		
