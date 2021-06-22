@@ -179,6 +179,11 @@ public class Towny extends JavaPlugin {
 		}
 
 		registerEvents();
+		
+		if (getServer().getPluginManager().isPluginEnabled("Slimefun")) {
+			// Register Slimefun items and multiblocks
+			new TownySlimefunAddon();
+		}
 
 		System.out.println("=============================================================");
 		if (isError()) {
@@ -354,8 +359,6 @@ public class Towny extends JavaPlugin {
 		test = getServer().getPluginManager().getPlugin("Slimefun");
 		if (test != null) {
 			addons.add(String.format("%s v%s", "Slimefun", test.getDescription().getVersion()));
-			// Register Slimefun items and multiblocks
-			new TownySlimefunAddon();
 		}
 
 		//Add our chat handler to TheNewChat via the API.

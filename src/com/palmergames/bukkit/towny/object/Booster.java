@@ -1,6 +1,7 @@
 package com.palmergames.bukkit.towny.object;
 
 import com.palmergames.bukkit.towny.Towny;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,7 @@ public abstract class Booster implements Nameable {
 		return getName();
 	}
 	
-	public static Booster fromString(String string) {
+	public static Booster fromString(String string) throws TownyException {
 		String[] split = string.split(" ");
 
 		String item = split[0];
@@ -46,6 +47,7 @@ public abstract class Booster implements Nameable {
 				return new ItemBooster(new ItemStack(material, qty));
 			}
 		}
-		return null;
+		
+		throw new TownyException("Invalid booster: " + string);
 	}
 }

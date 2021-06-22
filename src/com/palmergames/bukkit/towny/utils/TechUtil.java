@@ -121,7 +121,7 @@ public class TechUtil {
 					state = TechState.CAN_CHANGE_RESEARCH;
 				}
 			// If all requirements are met but tech is non-peaceful
-			} else if (tech.nonPeaceful && !town.isNeutral()) {
+			} else if (tech.nonPeaceful && town.isNeutral()) {
 				state = TechState.NON_PEACEFUL;
 			} else {
 				state = TechState.LOCKED;

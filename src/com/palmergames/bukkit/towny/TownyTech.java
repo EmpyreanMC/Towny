@@ -2,7 +2,6 @@ package com.palmergames.bukkit.towny;
 
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Booster;
-import com.palmergames.bukkit.towny.object.Coord;
 import com.palmergames.bukkit.towny.object.Tech;
 import com.palmergames.util.FileMgmt;
 import org.bukkit.Material;
@@ -41,7 +40,7 @@ public class TownyTech {
 		techs = getTechs(config);
     }
 
-    private static Map<String, Tech> getTechs(@NotNull FileConfiguration config) {
+    private static Map<String, Tech> getTechs(@NotNull FileConfiguration config) throws TownyException {
     	Map<String, Tech> cache = new HashMap<>();
     	
     	for (String key : config.getKeys(false)) {
@@ -52,7 +51,7 @@ public class TownyTech {
     }
     
     @Nullable
-	private static Tech getTech(@NotNull FileConfiguration config, Map<String, Tech> cache, String id) {
+	private static Tech getTech(@NotNull FileConfiguration config, Map<String, Tech> cache, String id) throws TownyException {
 		if (cache.containsKey(id)) return cache.get(id);
 		
 		ConfigurationSection section = config.getConfigurationSection(id);
@@ -66,10 +65,10 @@ public class TownyTech {
 			rankPermsSection.getKeys(false).forEach(k -> rankPerms.put(k, rankPermsSection.getStringList(k)));
 		}
 
-		List<Tech> requires = section.getStringList("requires")
-			.stream()
-			.map(key -> getTech(config, cache, key))
-			.collect(Collectors.toList());
+		List<Tech> requires = new ArrayList<>();
+		for (String key : section.getStringList("requires")) {
+			requires.add(getTech(config, cache, key));
+		}
 
 		Tech tech = new Tech(
 			id,
@@ -94,7 +93,11 @@ public class TownyTech {
 		return tech;
     }
     
-    private static List<Booster> parseBoost(List<String> boosters) {
-    	return boosters.stream().map(Booster::fromString).collect(Collectors.toList());
+    private static List<Booster> parseBoost(List<String> boosters) throws TownyException {
+		List<Booster> result = new ArrayList<>();
+		for (String booster : boosters) {
+			result.add(Booster.fromString(booster));
+		}
+		return result;
 	}
 }

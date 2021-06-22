@@ -1,5 +1,6 @@
 package com.palmergames.bukkit.towny.object;
 
+import com.palmergames.bukkit.util.Colors;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +21,7 @@ public class SlimefunBooster extends Booster {
 	public boolean boost(Resident resident) {
 		Player player = resident.getPlayer();
 		if (player != null && canBoost(resident)) {
-			ItemStack item = sfItem.getItem();
+			ItemStack item = sfItem.getItem().clone();
 			item.setAmount(qty);
 			player.getInventory().removeItem(item);
 			return true;
@@ -54,6 +55,6 @@ public class SlimefunBooster extends Booster {
 
 	@Override
 	public String getFormattedName() {
-		return qty + " " + sfItem.getItemName();
+		return qty + " " + Colors.strip(sfItem.getItemName());
 	}
 }

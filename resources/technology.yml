@@ -119,7 +119,7 @@ mass-production:
         - "machinery"
     boost:
         - "SLIMEFUN:SILVER_INGOT 150"
-        - "WOOL 300"
+        - "WHITE_WOOL 300"
     permissions:
         default:
             - "slimefun.item.studies"
@@ -175,7 +175,7 @@ printing-press:
         - "mass-production"
     boost:
         - "SLIMEFUN:BRONZE_INGOT 200"
-        - "WRITABLE_BOOK 300"
+        - "WRITTEN_BOOK 100"
     permissions:
         default:
             - "slimefun.item.academy"
@@ -207,7 +207,7 @@ black-powder:
     requires:
         - "siege-weaponry"
     boost:
-        - "SLIMEFUN:STEEL_INGOT 150"
+        - "SLIMEFUN:STEEL_INGOT 200"
         - "GUNPOWDER 300"
     non-peaceful: true
     permissions:
