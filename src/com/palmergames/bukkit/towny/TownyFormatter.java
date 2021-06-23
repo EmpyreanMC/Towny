@@ -431,7 +431,7 @@ public class TownyFormatter {
 			getRanks(town, ranklist);
 			out.addAll(ranklist);
 
-			// Residents [12]: James, Carry, Mason
+			// Residents [12/15]: James, Carry, Mason
 			String[] residents = getFormattedNames(town.getResidents().toArray(new Resident[0]));
 			if (residents.length > 34) {
 				String[] entire = residents;
@@ -439,7 +439,7 @@ public class TownyFormatter {
 				System.arraycopy(entire, 0, residents, 0, 35);
 				residents[35] = Translation.of("status_town_reslist_overlength");
 			}
-			out.addAll(ChatTools.listArr(residents, Translation.of("status_town_reslist", town.getNumResidents())));
+			out.addAll(ChatTools.listArr(residents, Translation.of("status_town_reslist", town.getNumResidents(), TownySettings.getMaxResidentsForTown(town))));
 
 			// Technologies: 12
 			out.add(Translation.of("status_town_techs", town.getTechs().size()));
