@@ -51,12 +51,9 @@ public class ItemBooster extends Booster {
 
 	@Override
 	public String getFormattedName() {
-		ItemMeta meta = item.getItemMeta();
 		String name;
-		if (meta.hasLocalizedName()) {
-			name = meta.getLocalizedName();
-		} else if (meta.hasDisplayName()) {
-			name = meta.getDisplayName();
+		if (item.getI18NDisplayName() != null) {
+			name = item.getI18NDisplayName();
 		} else {
 			name = WordUtils.capitalizeFully(StringMgmt.remUnderscore(item.getType().toString()));
 		}
