@@ -149,28 +149,34 @@ public class TechUtil {
 						break;
 					case RESEARCH_BOOSTED:
 						color = Colors.Yellow;
-						info.add(Colors.translateColorCodes("&6Researching... &e" + df.format(town.getResearch()) + "&6/" + df.format(tech.cost)));
+						info.add(Colors.White + "Researching...");
+						info.add(Colors.LightGray + (int) Math.ceil((tech.cost - town.getResearch()) / town.getResearchPerHour()) +
+							" hours left (" + df.format(town.getResearch()) + "/" + df.format(tech.cost) + ")");
 						info.add(Colors.translateColorCodes("&6» &6&oBOOSTED! &6»"));
 						break;
 					case RESEARCH:
 						color = Colors.LightBlue;
-						info.add(Colors.translateColorCodes("&3Researching... &b" + df.format(town.getResearch()) + "&3/" + df.format(tech.cost)));
-						info.add(Colors.Blue + "Click to boost research!");
+						info.add(Colors.White + "Researching...");
+						info.add(Colors.LightGray + (int) Math.ceil((tech.cost - town.getResearch()) / town.getResearchPerHour()) +
+							" hours left (" + df.format(town.getResearch()) + "/" + df.format(tech.cost) + ")");
+						info.add(Colors.Yellow + "Click to boost research!");
 						break;
 					case CAN_RESEARCH:
 						color = Colors.LightGreen;
 						if (isMayor) {
-							info.add(Colors.Green + "Click to begin research!");
+							info.add(Colors.White + "Click to begin research!");
+							info.add(Colors.LightGray + (int) Math.ceil(tech.cost / town.getResearchPerHour()) +
+								" hours (" + df.format(tech.cost) + " research)");
 						} else {
-							info.add(Colors.Green + "We may begin research!");
-							info.add(Colors.Green + "Ask the mayor to begin it.");
+							info.add(Colors.White + "We may begin research!");
+							info.add(Colors.White + "Ask the mayor to begin it.");
 						}
 						break;
 					case CAN_CHANGE_RESEARCH:
 						color = Colors.LightGray;
 						if (isMayor) {
 							info.add(Colors.Gray + "Click to change current research.");
-							info.add(Colors.Red + "This will clear ALL progress!");
+							info.add(Colors.Red + "This will clear ALL research progress!");
 						}
 						break;
 					case NON_PEACEFUL:

@@ -121,6 +121,21 @@ public class Town extends Government implements TownBlockOwner {
 
 		completedBoosters.add(booster);
 	}
+	
+	public double getResearchPerHour() {
+		// https://www.youtube.com/watch?v=_xp3zG-d7w8
+		double base = TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_BASE_RESEARCH);
+
+		for (Tech tech : getTechs()) {
+			if (tech.researchRate > base) base = tech.researchRate;
+		}
+		
+		if (isCapital()) {
+			base *= TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_CAPITAL_RESEARCH);
+		}
+		
+		return base;
+	}
 
 	public boolean canResearchTech(Tech tech) {
 		return !hasTech(tech) &&

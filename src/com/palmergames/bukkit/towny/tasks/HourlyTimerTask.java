@@ -88,13 +88,6 @@ public class HourlyTimerTask extends TownyTimerTask {
 			return;
 		}
 		
-		// https://www.youtube.com/watch?v=_xp3zG-d7w8
-		double base = TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_BASE_RESEARCH);
-		
-		for (Tech tech : town.getTechs()) {
-			if (tech.researchRate > base) base = tech.researchRate;
-		}
-		
-		town.addResearch(base * (town.isCapital() ? TownySettings.getDouble(ConfigNodes.GTOWN_SETTINGS_CAPITAL_RESEARCH) : 1));
+		town.addResearch(town.getResearchPerHour());
 	}
 }
