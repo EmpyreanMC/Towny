@@ -23,6 +23,7 @@ import org.bukkit.util.ChatPaginator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -446,7 +447,11 @@ public class TownyFormatter {
 			// Researching: Siege Weaponry (140/200)
 			Tech researched = town.getResearchedTech();
 			if (researched != null) {
-				out.add(Translation.of("status_town_research", researched, town.getResearch(), researched.cost));
+				DecimalFormat df = new DecimalFormat("0.##");
+				out.add(Translation.of("status_town_research",
+					researched.getFormattedName(),
+					df.format(town.getResearch()),
+					df.format(researched.cost)));
 			}
 		}
 

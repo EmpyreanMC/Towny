@@ -5,6 +5,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.*;
 import com.palmergames.bukkit.util.Colors;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,19 +141,20 @@ public class TechUtil {
 
 				String color;
 				List<String> info = new ArrayList<>();
+				DecimalFormat df = new DecimalFormat("0.##");
 				switch (state) {
 					case UNLOCKED:
 						color = Colors.DarkPurple;
-						info.add(Colors.LightGray + "Unlocked");
+						info.add(Colors.LightGray + ChatColor.ITALIC + "Unlocked");
 						break;
 					case RESEARCH_BOOSTED:
 						color = Colors.Yellow;
-						info.add(Colors.translateColorCodes("&6Researching... &e" + town.getResearch() + "&6/" + tech.cost));
-						info.add(Colors.translateColorCodes("&6&oBoosted!"));
+						info.add(Colors.translateColorCodes("&6Researching... &e" + df.format(town.getResearch()) + "&6/" + df.format(tech.cost)));
+						info.add(Colors.translateColorCodes("&6» &6&oBOOSTED! &6»"));
 						break;
 					case RESEARCH:
 						color = Colors.LightBlue;
-						info.add(Colors.translateColorCodes("&3Researching... &b" + town.getResearch() + "&3/" + tech.cost));
+						info.add(Colors.translateColorCodes("&3Researching... &b" + df.format(town.getResearch()) + "&3/" + df.format(tech.cost)));
 						info.add(Colors.Blue + "Click to boost research!");
 						break;
 					case CAN_RESEARCH:
@@ -177,7 +180,7 @@ public class TechUtil {
 						break;
 					default:
 						color = Colors.LightGray;
-						info.add(Colors.Gray + "Locked");
+						info.add(Colors.Gray + ChatColor.ITALIC + "Locked");
 						break;
 				}
 				
@@ -256,7 +259,7 @@ public class TechUtil {
 			ItemStack jumpTo = new ItemStack(current.guiIcon);
 			ItemMeta meta = jumpTo.getItemMeta();
 			meta.setDisplayName(Colors.LightBlue + "Jump to current");
-			meta.setLore(Collections.singletonList((isResearched ? Colors.Gold : Colors.DarkPurple) + current.name));
+			meta.setLore(Collections.singletonList(Colors.Blue + current.name));
 			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			
 			if (isResearched) {
@@ -270,13 +273,13 @@ public class TechUtil {
 		
 		ItemStack up = new ItemStack(isTop ? Material.NETHERITE_HELMET : Material.DIAMOND_HELMET);
 		ItemMeta meta = up.getItemMeta();
-		meta.setDisplayName(Colors.translateColorCodes(isTop ? "&8&l/\\ &8Up" : "&b&l/\\ &3Up"));
+		meta.setDisplayName(Colors.translateColorCodes(isTop ? "&8&l▲ &8Up" : "&b&l▲ &3Up"));
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		up.setItemMeta(meta);
 
 		ItemStack down = new ItemStack(isBottom ? Material.NETHERITE_BOOTS : Material.DIAMOND_BOOTS);
 		meta = down.getItemMeta();
-		meta.setDisplayName(Colors.translateColorCodes(isBottom ? "&8&l\\/ &8Down" : "&b&l\\/ &3Down"));
+		meta.setDisplayName(Colors.translateColorCodes(isBottom ? "&8&l▼ &8Down" : "&b&l▼ &3Down"));
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		down.setItemMeta(meta);
 		
@@ -293,7 +296,7 @@ public class TechUtil {
 		for (Booster booster : boosters) {
 			boolean completed = town.getCompletedBoosters().contains(booster);
 			lore.add(Colors.translateColorCodes(
-				(completed ? "&8" : "&6") + " ➢ " + (completed ? "&8&m" : "&6") + booster.getFormattedName()));
+				(completed ? "&8" : "&6") + " » " + (completed ? "&8&m" : "&6") + booster.getFormattedName()));
 		}
 		
 		return lore;
