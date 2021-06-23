@@ -60,7 +60,12 @@ public class Tech implements Nameable {
 	public String getName() {
 		return id;
 	}
-	
+
+	@Override
+	public String getFormattedName() {
+		return name;
+	}
+
 	@Override
 	public String toString() {
 		return getName();

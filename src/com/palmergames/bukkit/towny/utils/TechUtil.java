@@ -190,7 +190,7 @@ public class TechUtil {
 						break;
 				}
 				
-				meta.setDisplayName(color + tech.name);
+				meta.setDisplayName(color + tech.getFormattedName());
 				
 				List<String> lore = new ArrayList<>();
 				if (info.size() > 0) {
@@ -265,7 +265,7 @@ public class TechUtil {
 			ItemStack jumpTo = new ItemStack(current.guiIcon);
 			ItemMeta meta = jumpTo.getItemMeta();
 			meta.setDisplayName(Colors.LightBlue + "Jump to current");
-			meta.setLore(Collections.singletonList(Colors.Blue + current.name));
+			meta.setLore(Collections.singletonList(Colors.Blue + current.getFormattedName()));
 			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			
 			if (isResearched) {
