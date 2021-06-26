@@ -109,7 +109,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 		 * Register the driver (if possible)
 		 */
 		try {
-			Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
 			DriverManager.registerDriver(driver);
 		} catch (Exception e) {
 			System.out.println("[Towny] Driver error: " + e);
@@ -796,7 +796,9 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 					search = (line.contains("#")) ? "#" : ",";
 					List<Resident> friends = getResidents(line.split(search));
 					for (Resident friend : friends) {
-						resident.addFriend(friend);
+						try {
+							resident.addFriend(friend);
+						} catch (AlreadyRegisteredException ignored) {}
 					}
 				}
 			} catch (Exception e) {
