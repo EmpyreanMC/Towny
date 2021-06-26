@@ -89,5 +89,6 @@ public class HourlyTimerTask extends TownyTimerTask {
 		}
 		
 		town.addResearch(town.getResearchPerHour());
+		town.save();
 	}
 }
