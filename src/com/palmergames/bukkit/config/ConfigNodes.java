@@ -189,6 +189,13 @@ public enum ConfigNodes {
     		"# Minimum number of plots an outpost must be from any other town's plots.",
     		"# Useful when min_plot_distance_from_town_plot is set to near-zero to allow towns to have claims",
     		"# near to each other, but want to keep outposts away from towns."),
+    TOWN_MAX_DISTANCE_FOR_OUTPOST_FROM_TOWN_PLOT(
+    		"town.max_distance_for_outpost_from_town_plot",
+    		"0",
+    		"",
+    		"# Set to 0 to disable. When above 0 an outpost may only be claimed within the given number of townblocks from a townblock owned by the town.",
+    		"# Setting this to any value above 0 will stop outposts being made off-world from the town's homeworld.",
+    		"# Do not set lower than min_distance_for_outpost_from_plot above."),
 	TOWN_MAX_DISTANCE_BETWEEN_HOMEBLOCKS(
 			"town.max_distance_between_homeblocks",
 			"0",
@@ -591,6 +598,18 @@ public enum ConfigNodes {
 			"true",
 			"",
 			"# When this is true, players will respawn to respawn anchors on death rather than their own town. 1.16+ only."),
+	GTOWN_HOMEBLOCK_MOVEMENT_COOLDOWN(
+			"global_town_settings.homeblock_movement_cooldown_hours",
+			"0",
+			"",
+			"# When set above 0, the amount of hours a town must wait after setting their homeblock, in order to move it again."),
+	GTOWN_HOMEBLOCK_MOVEMENT_DISTANCE(
+			"global_town_settings.homeblock_movement_distance_limit",
+			"0",
+			"",
+			"# When set above 0, the furthest number of townblocks a homeblock can be moved by.",
+			"# Example: setting it to 3 would mean the player can only move their homeblock over by 3 townblocks at a time.",
+			"# Useful when used with the above homeblock_movement_cooldown_hours setting."),
 	GTOWN_SETTINGS_SHOW_TOWN_NOTIFICATIONS(
 			"global_town_settings.show_town_notifications",
 			"true",
@@ -624,6 +643,12 @@ public enum ConfigNodes {
 			"# Should towns be warned in case an outlaw roams the town?",
 			"# Warning: Outlaws can use this feature to spam residents with warnings!",
 			"# It is recommended to set this to true only if you're using outlaw teleporting with a warmup of 0 seconds."),
+	GTOWN_SETTINGS_OUTLAW_TELEPORT_ON_BECOMING_OUTLAWED(
+			"global_town_settings.outlaw_teleport_away_on_becoming_outlawed",
+			"false",
+			"",
+			"# If set to true, when a player is made into an outlaw using /t outlaw add NAME, and that new",
+			"# outlaw is within the town's borders, the new outlaw will be teleported away using the outlaw_teleport_warmup."),
 	GTOWN_SETTINGS_OUTLAW_TELEPORT_WARMUP(
 			"global_town_settings.outlaw_teleport_warmup",
 			"5",
@@ -2294,7 +2319,7 @@ public enum ConfigNodes {
 			"",
 			"# This value determines the maximum duration in which a town can lie in ruins",
 			"# After this time is reached, the town will be completely deleted.",
-			"# Does not accept values greater than 1000."),
+			"# Does not accept values greater than 8760, which is equal to one year."),
 	TOWN_RUINING_TOWN_RUINS_MIN_DURATION_HOURS(
 			"town_ruining.town_ruins.min_duration_hours", 
 			"4",
@@ -2307,6 +2332,12 @@ public enum ConfigNodes {
 			"",
 			"# If this is true, then after a town has been ruined for the minimum configured time,",
 			"# it can then be reclaimed by any resident who runs /t reclaim, and pays the required price. (price is configured in the eco section)"),
+	TOWN_RUINING_TOWNS_BECOME_PUBLIC(
+			"town_ruining.town_ruins.ruins_become_public",
+			"false",
+			"",
+			"# If this is true, when a town becomes a ruin they also receive public status,",
+			"# meaning anyone can use /t spawn NAME to teleport to that town."),
 	WAR(
 			"war",
 			"",

@@ -177,6 +177,7 @@ public class SQL_Schema {
 		columns.add("`research` float NOT NULL DEFAULT '0'");
 		columns.add("`researchedTech` VARCHAR(64) DEFAULT NULL");
 		columns.add("`completedBoosters` text DEFAULT NULL");
+		columns.add("`movedHomeBlockAt` BIGINT NOT NULL");
 		return columns;
 	}
 

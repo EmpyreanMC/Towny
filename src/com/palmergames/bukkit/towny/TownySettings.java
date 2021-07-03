@@ -2114,6 +2114,14 @@ public class TownySettings {
 		return getBoolean(ConfigNodes.GTOWN_RESPAWN_ANCHOR_HIGHER_PRECEDENCE);
 	}
 	
+	public static int getHomeBlockMovementCooldownHours() {
+		return getInt(ConfigNodes.GTOWN_HOMEBLOCK_MOVEMENT_COOLDOWN);
+	}
+	
+	public static int getHomeBlockMovementDistanceInTownBlocks() {
+		return getInt(ConfigNodes.GTOWN_HOMEBLOCK_MOVEMENT_DISTANCE);
+	}
+	
 	public static int getMaxResidentsPerTown() {
 		
 		return getInt(ConfigNodes.GTOWN_MAX_RESIDENTS_PER_TOWN);
@@ -2171,6 +2179,10 @@ public class TownySettings {
 	public static int getMinDistanceForOutpostsFromPlot() {
 		
 		return getInt(ConfigNodes.TOWN_MIN_DISTANCE_FOR_OUTPOST_FROM_PLOT);
+	}
+	
+	public static int getMaxDistanceForOutpostsFromTown() {
+		return getInt(ConfigNodes.TOWN_MAX_DISTANCE_FOR_OUTPOST_FROM_TOWN_PLOT);
 	}
 
 	public static int getMinDistanceFromTownPlotblocks() {
@@ -3057,6 +3069,10 @@ public class TownySettings {
 
 	public static boolean canOutlawsUseTeleportItems() {
 		return getBoolean(ConfigNodes.GTOWN_SETTINGS_ALLOW_OUTLAWS_USE_TELEPORT_ITEMS);
+	}
+	
+	public static boolean areNewOutlawsTeleportedAway() {
+		return getBoolean(ConfigNodes.GTOWN_SETTINGS_OUTLAW_TELEPORT_ON_BECOMING_OUTLAWED);
 	}
 	
 	public static int getOutlawTeleportWarmup() {

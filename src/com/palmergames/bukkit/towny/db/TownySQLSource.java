@@ -957,6 +957,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			town.setAdminDisabledPVP(rs.getBoolean("admindisabledpvp"));
 			town.setAdminEnabledPVP(rs.getBoolean("adminenabledpvp"));
 			town.setJoinedNationAt(rs.getLong("joinedNationAt"));
+			town.setMovedHomeBlockAt(rs.getLong("movedHomeBlockAt"));
 
 			town.setPurchasedBlocks(rs.getInt("purchased"));
 			
@@ -2067,6 +2068,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			twn_hm.put("admindisabledpvp", town.isAdminDisabledPVP());
 			twn_hm.put("adminenabledpvp", town.isAdminEnabledPVP());
 			twn_hm.put("joinedNationAt", town.getJoinedNationAt());
+			twn_hm.put("movedHomeBlockAt", town.getMovedHomeBlockAt());
 			if (town.hasMeta())
 				twn_hm.put("metadata", serializeMetadata(town));
 			else

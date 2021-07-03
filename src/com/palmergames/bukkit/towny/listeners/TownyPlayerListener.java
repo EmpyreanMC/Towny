@@ -30,15 +30,14 @@ import com.palmergames.bukkit.towny.tasks.TeleportWarmupTimerTask;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.EntityTypeUtil;
 import com.palmergames.bukkit.towny.utils.JailUtil;
+import com.palmergames.bukkit.towny.utils.SpawnUtil;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.bukkit.util.ChatTools;
-import com.palmergames.bukkit.util.Colors;
 import com.palmergames.bukkit.util.ItemLists;
 import com.palmergames.util.StringMgmt;
 
 import com.palmergames.util.TimeMgmt;
 
-import io.papermc.lib.PaperLib;
 import net.citizensnpcs.api.CitizensAPI;
 
 import org.bukkit.Bukkit;
@@ -81,7 +80,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Handle events for all Player related events
@@ -104,11 +102,6 @@ public class TownyPlayerListener implements Listener {
 
 		Player player = event.getPlayer();
 
-		if (plugin.isError()) {
-			TownyMessaging.sendMessage(player, Colors.Rose + "[Towny Error] Locked in Safe mode!");
-			return;
-		}
-
 		if (!player.isOnline()) {
 			return;
 		}
@@ -119,6 +112,18 @@ public class TownyPlayerListener implements Listener {
 			return;
 		}
 
+		// Safe Mode Join Messages
+		if (plugin.isError()) {
+			String tipMsg = Translation.of("msg_safe_mode_player");
+
+			// Operator or an admin.
+			if (TownyUniverse.getInstance().getPermissionSource().isTownyAdmin(player))
+				tipMsg = Translation.of("msg_safe_mode_admin");
+
+			TownyMessaging.sendErrorMsg(player, Translation.of("msg_safe_mode_base") + tipMsg);
+			return;
+		}
+		
 		// Perform login code in it's own thread to update Towny data.
 		if (BukkitTools.scheduleSyncDelayedTask(new OnPlayerLogin(Towny.getPlugin(), player), 0L) == -1) {
 			TownyMessaging.sendErrorMsg("Could not schedule OnLogin.");
@@ -471,6 +476,9 @@ public class TownyPlayerListener implements Listener {
 			Material mat = null;
 			ActionType actionType = ActionType.DESTROY;
 			
+			// PlayerInventory#getItem(EquipmentSlot) does not exist on <1.16, so this has to be used
+			Material item = event.getHand().equals(EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand().getType() : event.getPlayer().getInventory().getItemInOffHand().getType();
+
 			/*
 			 * The following will get us a Material substituted in for an Entity so that we can run permission tests.
 			 * Anything not in the switch will leave the block null.
@@ -493,10 +501,9 @@ public class TownyPlayerListener implements Listener {
 				 */
 				case SHEEP:
 				case WOLF:
-					if (event.getPlayer().getInventory().getItem(event.getHand()) != null) {
-						Material dye = event.getPlayer().getInventory().getItem(event.getHand()).getType();
-						if (ItemLists.DYES.contains(dye.name())) {
-							mat = dye;
+					if (item != null) {
+						if (ItemLists.DYES.contains(item.name())) {
+							mat = item;
 							break;
 						}
 					}	
@@ -539,8 +546,7 @@ public class TownyPlayerListener implements Listener {
 			/*
 			 * Handle things which need an item in hand.
 			 */
-			if (event.getPlayer().getInventory().getItem(event.getHand()) != null) {
-				Material item = event.getPlayer().getInventory().getItem(event.getHand()).getType();
+			if (item != null) {
 
 				/*
 				 * Sheep can be sheared, protect them if they aren't in the wilderness.
@@ -558,7 +564,7 @@ public class TownyPlayerListener implements Listener {
 					//Make decision on whether this is allowed using the PlayerCache and then a cancellable event.
 					event.setCancelled(!TownyActionEventExecutor.canDestroy(player, event.getRightClicked().getLocation(), item));
 					return;
-					}
+				}
 				
 				/*
 				 * Item_use protection.
@@ -831,20 +837,8 @@ public class TownyPlayerListener implements Listener {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						if (TownyAPI.getInstance().getTown(outlaw.getPlayer().getLocation()) != null && TownyAPI.getInstance().getTown(outlaw.getPlayer().getLocation()) == town && town.hasOutlaw(outlaw.getPlayer().getName())) {
-							Location spawnLocation = town.getWorld().getSpawnLocation();
-							Player outlawedPlayer = outlaw.getPlayer();
-							if (!TownySettings.getOutlawTeleportWorld().equals("")) {
-								spawnLocation = Objects.requireNonNull(Bukkit.getWorld(TownySettings.getOutlawTeleportWorld())).getSpawnLocation();
-							}
-							// sets tp location to their bedspawn only if it isn't in the town they're being teleported from.
-							if ((outlawedPlayer.getBedSpawnLocation() != null) && (TownyAPI.getInstance().getTown(outlawedPlayer.getBedSpawnLocation()) != town))
-								spawnLocation = outlawedPlayer.getBedSpawnLocation();
-							if (outlaw.hasTown() && TownyAPI.getInstance().getTownSpawnLocation(outlawedPlayer) != null)
-								spawnLocation = TownyAPI.getInstance().getTownSpawnLocation(outlawedPlayer);
-							TownyMessaging.sendMsg(outlaw, Translation.of("msg_outlaw_kicked", town));
-							PaperLib.teleportAsync(outlaw.getPlayer(), spawnLocation, TeleportCause.PLUGIN);
-						}
+						if (TownyAPI.getInstance().getTown(outlaw.getPlayer().getLocation()) != null && TownyAPI.getInstance().getTown(outlaw.getPlayer().getLocation()) == town && town.hasOutlaw(outlaw.getPlayer().getName())) 
+							SpawnUtil.outlawTeleport(town, outlaw);
 					}
 				}.runTaskLater(plugin, TownySettings.getOutlawTeleportWarmup() * 20);
 			}
@@ -1052,10 +1046,6 @@ public class TownyPlayerListener implements Listener {
 			return;
 		
 		Player player = event.getPlayer();
-		Resident res = TownyUniverse.getInstance().getResident(player.getUniqueId());
-		if (res == null)
-			return;
-		
 		String command = event.getMessage().substring(1).split(" ")[0];
 
 		/*
@@ -1076,7 +1066,7 @@ public class TownyPlayerListener implements Listener {
 				return;
 			
 			// Allow own town
-			if (town.hasResident(res)) {
+			if (town.hasResident(player)) {
 				return;
 			} else {
 				TownyMessaging.sendErrorMsg(player, Translation.of("msg_command_outsider_blocked", town.getName()));
@@ -1121,7 +1111,7 @@ public class TownyPlayerListener implements Listener {
 			// If the player is in their own town and has towny.claimed.owntown.build.dirt 
 			// (or more likely towny.claimed.owntown.*) then allow them to use the command.
 			// It is likely a mayor/assistant.
-			if (town.hasResident(res) && TownyUniverse.getInstance().getPermissionSource().hasOwnTownOverride(player, Material.DIRT, ActionType.BUILD))
+			if (town.hasResident(player) && TownyUniverse.getInstance().getPermissionSource().hasOwnTownOverride(player, Material.DIRT, ActionType.BUILD))
 				return;
 			
 			if (tb.hasResident()) {
@@ -1141,7 +1131,7 @@ public class TownyPlayerListener implements Listener {
 				// If the player is in their own town and has towny.claimed.townowned.build.dirt 
 				// (or more likely towny.claimed.townowned.*) then allow them to use the command.
 				// It is likely a assistant or town-ranked player. 
-				if (town.hasResident(res) && TownyUniverse.getInstance().getPermissionSource().hasTownOwnedOverride(player, Material.DIRT, ActionType.BUILD)) {
+				if (town.hasResident(player) && TownyUniverse.getInstance().getPermissionSource().hasTownOwnedOverride(player, Material.DIRT, ActionType.BUILD)) {
 					return;
 					
 				// Not a special person, and not in a personally-owned plot, cancel this command.

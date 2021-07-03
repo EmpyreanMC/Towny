@@ -721,6 +721,12 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 						town.setJoinedNationAt(Long.parseLong(line));
 					} catch (Exception ignored) {}
 
+				line = keys.get("movedHomeBlockAt");
+				if (line != null)
+					try {
+						town.setMovedHomeBlockAt(Long.parseLong(line));
+					} catch (Exception ignored) {}
+				
 				line = keys.get("homeBlock");
 				if (line != null) {
 					tokens = line.split(",");
@@ -1818,6 +1824,7 @@ public final class TownyFlatFileSource extends TownyDatabaseHandler {
 		}
         list.add("registered=" + town.getRegistered());
 		list.add("joinedNationAt=" + town.getJoinedNationAt());
+		list.add("movedHomeBlockAt=" + town.getMovedHomeBlockAt());
         
         // Home Block
 		if (town.hasHomeBlock())

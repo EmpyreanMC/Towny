@@ -16,6 +16,7 @@ import com.palmergames.util.StringMgmt;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,6 +58,7 @@ public class Town extends Government implements TownBlockOwner {
 	private boolean ruined = false;
 	private long ruinedTime;
 	private long joinedNationAt;
+	private long movedHomeBlockAt;
 	private Jail primaryJail;
 	
 	private final List<Tech> techs = new ArrayList<>();
@@ -416,6 +418,17 @@ public class Town extends Government implements TownBlockOwner {
 		return residents.contains(resident);
 	}
 
+	public boolean hasResident(Player player) {
+		
+		return hasResident(player.getUniqueId());
+	}
+	
+	public boolean hasResident(UUID uuid) {
+		
+		Resident resident = TownyAPI.getInstance().getResident(uuid);
+		return resident != null && hasResident(resident);
+	}
+	
 	/**
 	 * @deprecated Since 0.96.3.0, use {@link Resident#hasTownRank(String)} (using "assistant" as argument) instead.
 	 * Whether a resident has an assistant role or not.
@@ -1521,6 +1534,14 @@ public class Town extends Government implements TownBlockOwner {
 
 	public void setJoinedNationAt(long joinedNationAt) {
 		this.joinedNationAt = joinedNationAt;
+	}
+	
+	public long getMovedHomeBlockAt() {
+		return movedHomeBlockAt;
+	}
+
+	public void setMovedHomeBlockAt(long movedHomeBlockAt) {
+		this.movedHomeBlockAt = movedHomeBlockAt;
 	}
 
 	private void sortResidents() {
